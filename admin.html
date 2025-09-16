@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Admin</title>
+  <link rel="stylesheet" href="estiloadmin.css">
+</head>
+<body>
+  <h2>Panel de Administración</h2>
+  <button id="logout">Cerrar Sesión</button>
+
+  <form id="addProjectForm">
+    <input type="text" id="titulo" placeholder="Título del proyecto" required>
+    <input type="text" id="tecnologias" placeholder="Tecnologías usadas" required>
+
+    <!-- 📌 Campo Semana -->
+    <input type="text" id="semana" placeholder="Semana del proyecto (Ej: Semana 1)" required>
+
+    <!-- 📌 Imagen -->
+    <label>Imagen del proyecto:</label>
+    <input type="file" id="imagen" accept="image/*" required>
+
+    <!-- 📌 PDF -->
+    <label>Documento PDF del proyecto:</label>
+    <input type="file" id="pdf" accept="application/pdf" required>
+
+    <button type="submit">Agregar Proyecto</button>
+  </form>
+
+  <div id="preview"></div>
+
+  <script>
+    // Verificar sesión
+    if (!localStorage.getItem("logged")) {
+      window.location.href = "index.html";
+    }
+
+    // Cerrar sesión
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.removeItem("logged");
+      window.location.href = "index.html";
+    });
+
+    // Agregar proyecto
+    document.getElementById("addProjectForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const titulo = document.getElementById("titulo").value;
+      const tecnologias = document.getElementById("tecnologias").value;
+      const semana = document.getElementById("semana").value;
+      const pdfFile = document.getElementById("pdf").files[0];
+      const imgFile = document.getElementById("imagen").files[0];
+
+      if (!pdfFile || !imgFile) {
+        alert("Debes seleccionar una imagen y un PDF.");
+        return;
+      }
+
+      const readerPDF = new FileReader();
+      const readerIMG = new FileReader();
+
+      // Leer imagen primero
+      readerIMG.onload = function(evtImg) {
+        let imgBase64 = evtImg.target.result;
+
+        // Leer PDF después
+        readerPDF.onload = function(evtPDF) {
+          let pdfBase64 = evtPDF.target.result;
+
+          const proyecto = {
+            titulo,
+            tecnologias,
+            semana,
+            imagen: imgBase64, // 📌 Guardamos imagen
+            pdf: pdfBase64     // 📌 Guardamos PDF
+          };
+
+          let proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
+          proyectos.push(proyecto);
+          localStorage.setItem("proyectos", JSON.stringify(proyectos));
+
+          renderProjects();
+          document.getElementById("addProjectForm").reset();
+        };
+
+        readerPDF.readAsDataURL(pdfFile);
+      };
+
+      readerIMG.readAsDataURL(imgFile);
+    });
+
+    // Renderizar proyectos
+    function renderProjects() {
+      const preview = document.getElementById("preview");
+      preview.innerHTML = "";
+
+      let proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
+
+      proyectos.forEach((p, index) => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        card.innerHTML = `
+          <h3>${p.titulo}</h3>
+          <p>${p.tecnologias}</p>
+          <p><strong>${p.semana}</strong></p>
+          <img src="${p.imagen}" alt="Imagen del proyecto" style="max-width:200px; display:block; margin:10px 0;">
+          <a href="${p.pdf}" target="_blank">📄 Ver PDF</a><br>
+          <a href="${p.pdf}" download="${p.titulo}.pdf">⬇️ Descargar PDF</a><br>
+          <button class="edit" onclick="editProject(${index})">Editar</button>
+          <button class="delete" onclick="deleteProject(${index})">Eliminar</button>
+        `;
+
+        preview.appendChild(card);
+      });
+    }
+
+    // Eliminar proyecto
+    function deleteProject(index) {
+      let proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
+      proyectos.splice(index, 1);
+      localStorage.setItem("proyectos", JSON.stringify(proyectos));
+      renderProjects();
+    }
+
+    // Editar proyecto (básico)
+    function editProject(index) {
+      let proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
+      const p = proyectos[index];
+
+      document.getElementById("titulo").value = p.titulo;
+      document.getElementById("tecnologias").value = p.tecnologias;
+      document.getElementById("semana").value = p.semana;
+
+      // ⚠️ El PDF y la Imagen no se pueden volver a cargar automáticamente en los input type=file
+      deleteProject(index);
+    }
+
+    // Cargar al inicio
+    renderProjects();
+  </script>
+</body>
+</html>
