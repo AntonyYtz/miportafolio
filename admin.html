@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin - Adherly Dev</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-card: #1a1a1a;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666666;
+      --accent-primary: #00ff88;
+      --accent-secondary: #00ccff;
+      --accent-tertiary: #ff00ff;
+      --border-color: #2a2a2a;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.6);
+      --gradient-accent: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #ff00ff 100%);
+      --gradient-bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --success-color: #27ae60;
+      --warning-color: #f39c12;
+      --error-color: #e74c3c;
+    }
+
+    /* Estilos generales */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Grid de fondo animado */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-image: 
+        linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Header minimalista oscuro */
+    header {
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transform: translateY(0);
+      transition: var(--transition);
+    }
+
+    header.scrolled {
+      background: rgba(10, 10, 10, 0.95);
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
+    }
+
+    .logo::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient);
+      transition: left 0.5s ease;
+      z-index: -1;
+    }
+
+    .logo:hover::before {
+      left: 0;
+    }
+
+    .logo span {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: var(--transition);
+    }
+
+    .logo:hover span {
+      -webkit-text-fill-color: white;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 2rem;
+      position: relative;
+    }
+
+    nav ul li a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 80%;
+    }
+
+    nav ul li a:hover {
+      color: var(--accent-primary);
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    nav ul li a.active {
+      color: var(--accent-primary);
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .menu-toggle:hover {
+      transform: rotate(90deg);
+    }
+
+    /* Main content */
+    main {
+      padding: 5rem 0;
+      min-height: calc(100vh - 200px);
+    }
+
+    /* Cards cyberpunk */
+    .card {
+      background: var(--bg-card);
+      padding: 2.5rem;
+      border-radius: 0.5rem;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2rem;
+      transition: var(--transition);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--accent-primary);
+    }
+
+    .card h2 {
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      font-size: 1.75rem;
+      font-weight: 700;
+      position: relative;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
+    }
+
+    .card h2::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--gradient-accent);
+      border-radius: 1px;
+      transition: width 0.3s ease;
+    }
+
+    .card:hover h2::after {
+      width: 80px;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Form styles */
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 0.25rem;
+      font-size: 1rem;
+      transition: var(--transition);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      background: var(--bg-card);
+      box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.2);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-group input:focus + label,
+    .form-group textarea:focus + label {
+      color: var(--accent-primary);
+    }
+
+    /* Botones cyberpunk */
+    .btn {
+      display: inline-block;
+      background: var(--gradient-accent);
+      color: var(--bg-primary);
+      padding: 1rem 2rem;
+      border-radius: 0.25rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: 2px solid transparent;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      border-color: var(--accent-primary);
+    }
+
+    /* Contact info */
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .contact-item {
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      background: var(--bg-card);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .contact-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+      z-index: 0;
+    }
+
+    .contact-item:hover::before {
+      transform: scaleX(1);
+    }
+
+    .contact-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-primary);
+    }
+
+    .contact-item i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: var(--transition);
+    }
+
+    .contact-item:hover i {
+      transform: scale(1.1);
+    }
+
+    .contact-item h3 {
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 1.1rem;
+    }
+
+    .contact-item p {
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    /* Form status cyberpunk */
+    #formStatus {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 0.25rem;
+      text-align: center;
+      font-weight: 500;
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    #formStatus.ok {
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--success-color);
+      border: 1px solid var(--success-color);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #formStatus.error {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--error-color);
+      border: 1px solid var(--error-color);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer cyberpunk */
+    footer {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      padding: 4rem 0 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border-color);
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      opacity: 0.5;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .social-links {
+      display: flex;
+      margin: 1.5rem 0;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: rgba(0, 255, 136, 0.1);
+      border-radius: 50%;
+      margin: 0 0.75rem;
+      color: var(--accent-primary);
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--accent-primary);
+    }
+
+    .social-links a:hover {
+      transform: translateY(-3px);
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      border-color: var(--accent-primary);
+    }
+
+    .social-links a i {
+      position: relative;
+      z-index: 1;
+    }
+
+    .copyright {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 2rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-xl);
+      }
+
+      nav ul.active {
+        left: 0;
+      }
+
+      nav ul li {
+        margin: 1.5rem 0;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease;
+      }
+
+      nav ul.active li {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      nav ul.active li:nth-child(1) { transition-delay: 0.1s; }
+      nav ul.active li:nth-child(2) { transition-delay: 0.2s; }
+      nav ul.active li:nth-child(3) { transition-delay: 0.3s; }
+      nav ul.active li:nth-child(4) { transition-delay: 0.4s; }
+
+      .contact-info {
+        flex-direction: column;
+      }
+
+      .contact-item {
+        min-width: 100%;
+      }
+    }
+
+    /* Elementos específicos del admin */
+    #formulario, #logout-section {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    #formulario.show, #logout-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #login {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.6s ease;
+    }
+
+    #login.hide {
+      opacity: 0;
+      transform: translateY(-20px);
+      display: none;
+    }
+
+    #login.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .activity-list {
+      margin-top: 2rem;
+    }
+
+    .activity-item {
+      background: var(--bg-card);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideInRight 0.5s ease forwards;
+      border: 1px solid var(--border-color);
+    }
+
+    @keyframes slideInRight {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .activity-item:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent-primary);
+    }
+
+    .activity-info h3 {
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .activity-info p {
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .activity-info small {
+      color: var(--text-muted);
+    }
+
+    .activity-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: fadeInDown 0.6s ease 0.3s forwards;
+    }
+
+    @keyframes fadeInDown {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-small {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      width: auto;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--accent-primary);
+      color: var(--accent-primary);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #27ae60 0%, #219653 100%);
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #219653 0%, #1e8449 100%);
+    }
+
+    .ok {
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--success-color);
+      font-weight: 600;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--success-color);
+    }
+
+    .err {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--error-color);
+      font-weight: 600;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--error-color);
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: var(--bg-card);
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Efecto shake para errores */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    /* Animación de entrada para el panel de admin */
+    .admin-panel-card {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .admin-panel-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Retrasos escalonados para las tarjetas */
+    .card:nth-child(1) { transition-delay: 0.1s; }
+    .card:nth-child(2) { transition-delay: 0.2s; }
+    .card:nth-child(3) { transition-delay: 0.3s; }
+
+    /* Efecto de partículas cyberpunk */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      animation: particle-float 15s infinite linear;
+      box-shadow: 0 0 4px var(--accent-primary);
+    }
+
+    @keyframes particle-float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- Partículas animadas -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Header -->
+  <header id="mainHeader">
+    <div class="container">
+      <div class="header-content">
+        <a href="index.html" class="logo">Antony  <span></span></a>
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav>
+          <ul id="navMenu">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="projects.html">Proyectos</a></li>
+            <li><a href="contact.html">Contacto</a></li>
+            <li><a href="admin.html" class="active">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main>
+    <div class="container">
+      <!-- Login -->
+      <div class="card" id="login">
+        <h2><i class="fas fa-lock"></i> Acceso Administrativo</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="user"><i class="fas fa-user"></i> Usuario</label>
+            <input id="user" type="text" required placeholder="Ingresa tu usuario">
+          </div>
+          
+          <div class="form-group">
+            <label for="pass"><i class="fas fa-key"></i> Contraseña</label>
+            <input id="pass" type="password" required placeholder="Ingresa tu contraseña">
+          </div>
+          
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+          </button>
+        </form>
+        <div id="loginStatus"></div>
+      </div>
+
+      <!-- Panel de Administración -->
+      <div id="formulario">
+        <div class="admin-header">
+          <h1><i class="fas fa-cogs"></i> Panel de Administración</h1>
+          <button onclick="cerrarSesion()" class="btn btn-danger btn-small">
+            <i class="fas fa-power-off"></i> Cerrar Sesión
+          </button>
+          <div class="user-info">
+            <i class="fas fa-user-circle"></i>
+            <span id="username-display">Administrador</span>
+          </div>
+        </div>
+
+        <div class="card admin-panel-card">
+          <h2><i class="fas fa-plus-circle"></i> Añadir Nueva Actividad</h2>
+          <form id="form">
+            <div class="form-group">
+              <label for="titulo">Título de la Actividad</label>
+              <input id="titulo" type="text" required placeholder="Ej: Semana 01 - Introducción al Proyecto">
+            </div>
+
+            <div class="form-group">
+              <label for="descripcion">Descripción</label>
+              <textarea id="descripcion" rows="3" required placeholder="Describe brevemente la actividad..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="pdf">Enlace al PDF</label>
+              <input id="pdf" type="text" required placeholder="https://ejemplo.com/documento.pdf">
+            </div>
+
+            <button type="submit" class="btn">
+              <i class="fas fa-save"></i> Agregar Actividad
+            </button>
+          </form>
+          
+          <div class="note">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+              <strong>Nota de seguridad:</strong> El token de GitHub está almacenado en este archivo. 
+              Por seguridad, se recomienda revocar el token después de su uso o implementar 
+              una solución de autenticación más segura en un entorno de producción.
+            </div>
+          </div>
+          
+          <div id="status"></div>
+        </div>
+
+        <!-- Lista de actividades existentes -->
+        <div class="card admin-panel-card activity-list">
+          <h2><i class="fas fa-list"></i> Actividades Existentes</h2>
+          <div id="activities-container">
+            <p>Cargando actividades...</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p class="copyright">&copy; 2023 Adherly Dev. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Configuración de acceso */
+    const ADMIN_USER = "admin";
+    const ADMIN_PASS = "1234";
+
+    /* Configuración del gist */
+    const GIST_ID = "3690e860889f4588b37fb2406aee2c25";
+    const FILENAME = "actividades.json";
+    const GITHUB_TOKEN = "g";
+
+    /* Elementos del DOM */
+    const loginSection = document.getElementById('login');
+    const adminSection = document.getElementById('formulario');
+    const loginForm = document.getElementById('loginForm');
+    const activitiesContainer = document.getElementById('activities-container');
+    const usernameDisplay = document.getElementById('username-display');
+    const adminCards = document.querySelectorAll('.admin-panel-card');
+
+    /* Manejo de login mejorado */
+    function handleLogin(e) {
+      if (e) e.preventDefault();
+      
+      const u = document.getElementById("user").value.trim();
+      const p = document.getElementById("pass").value.trim();
+      const loginStatus = document.getElementById("loginStatus");
+      
+      if(u === ADMIN_USER && p === ADMIN_PASS){
+        // Animación de salida del login
+        loginSection.classList.add('hide');
+        
+        setTimeout(() => {
+          // Ocultar login completamente después de la animación
+          loginSection.style.display = "none";
+          
+          // Mostrar panel de administración
+          adminSection.style.display = "block";
+          
+          // Forzar reflow para asegurar la animación
+          void adminSection.offsetWidth;
+          
+          // Aplicar clases de animación
+          adminSection.classList.add('show');
+          
+          usernameDisplay.textContent = u;
+          
+          // Animar las tarjetas del panel de administración
+          setTimeout(() => {
+            adminCards.forEach((card, index) => {
+              setTimeout(() => {
+                card.classList.add('show');
+              }, index * 200);
+            });
+          }, 300);
+          
+          // Cargar actividades existentes
+          cargarActividadesExistentes();
+          
+          // Mostrar mensaje de éxito
+          loginStatus.innerHTML = '';
+        }, 300);
+      } else {
+        // Mostrar error con animación
+        loginStatus.innerHTML = `
+          <div class="err">
+            <i class="fas fa-exclamation-circle"></i>
+            Usuario o contraseña incorrectos. Inténtalo de nuevo.
+          </div>
+        `;
+        
+        // Agregar efecto de shake al formulario
+        loginForm.classList.add('shake');
+        setTimeout(() => {
+          loginForm.classList.remove('shake');
+        }, 500);
+      }
+    }
+
+    /* Cerrar sesión */
+    function cerrarSesion(){
+      // Ocultar panel de administración con animación
+      adminSection.classList.remove('show');
+      
+      // Remover animación de las tarjetas
+      adminCards.forEach(card => {
+        card.classList.remove('show');
+      });
+      
+      setTimeout(() => {
+        // Ocultar panel completamente
+        adminSection.style.display = "none";
+        
+        // Mostrar formulario de login con animación
+        loginSection.style.display = "block";
+        
+        // Forzar reflow
+        void loginSection.offsetWidth;
+        
+        // Aplicar animación de entrada al login
+        loginSection.classList.remove('hide');
+        loginSection.classList.add('show');
+        
+        // Limpiar formularios
+        document.getElementById("user").value = "";
+        document.getElementById("pass").value = "";
+        document.getElementById("form").reset();
+        
+        // Limpiar mensajes
+        document.getElementById("loginStatus").innerHTML = "";
+        document.getElementById("status").innerHTML = "";
+      }, 600);
+    }
+
+    /* Cargar actividades existentes */
+    async function cargarActividadesExistentes() {
+      try {
+        const actividades = await obtenerContenidoGist();
+        activitiesContainer.innerHTML = '';
+        
+        if (actividades.length === 0) {
+          activitiesContainer.innerHTML = '<p>No hay actividades registradas aún.</p>';
+          return;
+        }
+        
+        // Ordenar actividades por fecha (más recientes primero)
+        actividades.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        
+        actividades.forEach((act, index) => {
+          const activityItem = document.createElement('div');
+          activityItem.className = 'activity-item';
+          activityItem.style.animationDelay = `${index * 0.1}s`;
+          activityItem.innerHTML = `
+            <div class="activity-info">
+              <h3>${act.titulo}</h3>
+              <p>${act.descripcion}</p>
+              <small><i class="far fa-calendar"></i> ${new Date(act.fecha).toLocaleString()}</small>
+            </div>
+            <div class="activity-actions">
+              <a href="${act.pdf}" target="_blank" class="btn btn-small btn-outline">
+                <i class="fas fa-eye"></i> Ver
+              </a>
+              <button onclick="eliminarActividad(${index})" class="btn btn-small btn-danger">
+                <i class="fas fa-trash"></i> Eliminar
+              </button>
+            </div>
+          `;
+          activitiesContainer.appendChild(activityItem);
+        });
+      } catch (error) {
+        activitiesContainer.innerHTML = `
+          <div class="err">
+            <i class="fas fa-exclamation-circle"></i>
+            Error al cargar las actividades: ${error.message}
+          </div>
+        `;
+      }
+    }
+
+    /* Eliminar actividad */
+    async function eliminarActividad(index) {
+      if (!confirm('¿Estás seguro de que deseas eliminar esta actividad?')) {
+        return;
+      }
+      
+      try {
+        const actividades = await obtenerContenidoGist();
+        actividades.splice(index, 1);
+        await actualizarGist(actividades);
+        
+        // Recargar la lista
+        await cargarActividadesExistentes();
+        
+        // Mostrar mensaje de éxito
+        setStatus('✅ Actividad eliminada correctamente', true);
+      } catch (error) {
+        setStatus('❌ Error al eliminar la actividad: ' + error.message, false);
+      }
+    }
+
+    /* Helpers */
+    function setStatus(msg, ok = true) {
+      const el = document.getElementById("status");
+      el.innerHTML = ok ? 
+        `<div class="ok"><i class="fas fa-check-circle"></i> ${msg}</div>` :
+        `<div class="err"><i class="fas fa-exclamation-circle"></i> ${msg}</div>`;
+      
+      // Auto-ocultar mensajes después de 5 segundos
+      setTimeout(() => {
+        el.innerHTML = '';
+      }, 5000);
+    }
+
+    /* Funciones Gist */
+    async function obtenerContenidoGist() {
+      const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+        headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+      });
+      
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}: ${res.statusText}`);
+      }
+      
+      const data = await res.json();
+      const content = data.files[FILENAME]?.content || "[]";
+      
+      try { 
+        return JSON.parse(content); 
+      } catch (e) { 
+        throw new Error("Error al analizar el contenido del Gist"); 
+      }
+    }
+
+    async function actualizarGist(nuevoArray) {
+      const payload = { 
+        files: { 
+          [FILENAME]: { 
+            content: JSON.stringify(nuevoArray, null, 2) 
+          } 
+        } 
+      };
+      
+      const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+        method: "PATCH",
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || "Error al actualizar el Gist");
+      }
+      
+      return res.json();
+    }
+
+    /* Manejo del formulario de actividades */
+    document.getElementById("form").addEventListener("submit", async e => {
+      e.preventDefault();
+      
+      const titulo = document.getElementById("titulo").value.trim();
+      const descripcion = document.getElementById("descripcion").value.trim();
+      const pdf = document.getElementById("pdf").value.trim();
+
+      // Validación básica
+      if (!titulo || !descripcion || !pdf) {
+        setStatus('❌ Todos los campos son obligatorios', false);
+        return;
+      }
+
+      try {
+        let actividades = await obtenerContenidoGist();
+        actividades.push({ 
+          titulo, 
+          descripcion, 
+          pdf, 
+          fecha: new Date().toISOString() 
+        });
+        
+        await actualizarGist(actividades);
+        setStatus('✅ Actividad añadida correctamente');
+        
+        // Limpiar formulario
+        e.target.reset();
+        
+        // Recargar lista de actividades
+        await cargarActividadesExistentes();
+      } catch(err) {
+        setStatus('❌ Error: ' + err.message, false);
+      }
+    });
+
+    /* Event Listeners */
+    loginForm.addEventListener('submit', handleLogin);
+
+    // Generar burbujas
+    function createBubbles() {
+      const bubblesContainer = document.getElementById('bubbles');
+      const bubbleCount = 20;
+      
+      for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        
+        // Tamaño aleatorio
+        const size = Math.random() * 120 + 20;
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        
+        // Posición aleatoria
+        bubble.style.left = `${Math.random() * 100}%`;
+        
+        // Animación con retraso y duración aleatorios
+        bubble.style.animationDelay = `${Math.random() * 15}s`;
+        bubble.style.animationDuration = `${15 + Math.random() * 10}s`;
+        
+        bubblesContainer.appendChild(bubble);
+      }
+    }
+
+    // Generar partículas
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Tamaño aleatorio
+        const size = Math.random() * 3 + 1;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Posición aleatoria
+        particle.style.left = `${Math.random() * 100}%`;
+        
+        // Animación con retraso y duración aleatorios
+        particle.style.animationDelay = `${Math.random() * 8}s`;
+        particle.style.animationDuration = `${5 + Math.random() * 5}s`;
+        
+        // Color aleatorio dentro de la paleta
+        const colors = ['#6c63ff', '#4cc9f0', '#ff6b6b', '#51cf66'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Menú móvil
+    document.getElementById('menuToggle').addEventListener('click', function() {
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.toggle('active');
+      
+      // Animación del icono del menú
+      this.querySelector('i').classList.toggle('fa-bars');
+      this.querySelector('i').classList.toggle('fa-times');
+    });
+
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('#navMenu a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.getElementById('navMenu').classList.remove('active');
+        document.querySelector('#menuToggle i').classList.add('fa-bars');
+        document.querySelector('#menuToggle i').classList.remove('fa-times');
+      });
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('mainHeader');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+      createBubbles();
+      createParticles();
+      
+      // Verificar si ya hay una sesión activa (en un caso real, usaríamos tokens seguros)
+      const sessionActive = sessionStorage.getItem('adminLoggedIn');
+      if (sessionActive) {
+        // En un caso real, verificaríamos la validez del token
+        handleLogin();
+      }
+    });
+  </script>
+</body>
+</html>

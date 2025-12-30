@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos - Adherly Dev</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Variables CSS - Diseño Minimalista Oscuro */
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-card: #1a1a1a;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666666;
+      --accent-primary: #00ff88;
+      --accent-secondary: #00ccff;
+      --accent-tertiary: #ff00ff;
+      --border-color: #2a2a2a;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.6);
+      --gradient-accent: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #ff00ff 100%);
+      --gradient-bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Estilos generales */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Grid de fondo animado */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-image: 
+        linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Header minimalista oscuro */
+    header {
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transform: translateY(0);
+      transition: var(--transition);
+    }
+
+    header.scrolled {
+      background: rgba(10, 10, 10, 0.95);
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
+    }
+
+    .logo::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient);
+      transition: left 0.5s ease;
+      z-index: -1;
+    }
+
+    .logo:hover::before {
+      left: 0;
+    }
+
+    .logo span {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: var(--transition);
+    }
+
+    .logo:hover span {
+      -webkit-text-fill-color: white;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 2rem;
+      position: relative;
+    }
+
+    nav ul li a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 80%;
+    }
+
+    nav ul li a:hover {
+      color: var(--accent-primary);
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    nav ul li a.active {
+      color: var(--accent-primary);
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .menu-toggle:hover {
+      transform: rotate(90deg);
+    }
+
+    /* Main content */
+    main {
+      padding: 5rem 0;
+      min-height: calc(100vh - 200px);
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .page-title h1 {
+      font-size: 2.5rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+    }
+
+    .page-title p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .page-title h1::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+      animation: expandWidth 3s ease infinite;
+    }
+
+    @keyframes expandWidth {
+      0%, 100% { width: 60px; }
+      50% { width: 100px; }
+    }
+
+    /* Cards de proyectos cyberpunk */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      border: 1px solid var(--border-color);
+      position: relative;
+      transform: rotateX(90deg);
+      opacity: 0;
+      animation: flipIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes flipIn {
+      0% {
+        transform: rotateX(90deg);
+        opacity: 0;
+      }
+      50% {
+        transform: rotateX(-10deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: rotateX(0deg);
+        opacity: 1;
+      }
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--accent-primary);
+    }
+
+    .project-image {
+      width: 100%;
+      height: 200px;
+      background: var(--gradient-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-primary);
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+    }
+
+    .project-card:hover .project-image {
+      transform: scale(1.05);
+    }
+
+    .project-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .project-content {
+      padding: 1.5rem;
+    }
+
+    .project-content h2 {
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      position: relative;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
+    }
+
+    .project-content h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: var(--gradient-accent);
+      transition: width 0.3s ease;
+    }
+
+    .project-card:hover .project-content h2::after {
+      width: 60px;
+    }
+
+    .project-content p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .project-date {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .project-date i {
+      margin-right: 5px;
+    }
+
+    /* Botones cyberpunk */
+    .btn {
+      display: inline-block;
+      background: var(--gradient-accent);
+      color: var(--bg-primary);
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: 2px solid transparent;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      border-color: var(--accent-primary);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--accent-primary);
+      color: var(--accent-primary);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    }
+
+    /* Botón de descarga cyberpunk */
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      background: var(--gradient-accent);
+      color: var(--bg-primary);
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: 2px solid transparent;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .download-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .download-btn:hover::before {
+      left: 100%;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      border-color: var(--accent-primary);
+    }
+
+    .download-btn i {
+      margin-right: 0.5rem;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .error {
+      text-align: center;
+      padding: 2rem;
+      color: #e74c3c;
+      background: rgba(231, 76, 60, 0.1);
+      border: 1px solid #e74c3c;
+      border-radius: 0.25rem;
+    }
+
+    /* Footer cyberpunk */
+    footer {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      padding: 4rem 0 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border-color);
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-accent);
+      opacity: 0.5;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .social-links {
+      display: flex;
+      margin: 1.5rem 0;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: rgba(0, 255, 136, 0.1);
+      border-radius: 50%;
+      margin: 0 0.75rem;
+      color: var(--accent-primary);
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--accent-primary);
+    }
+
+    .social-links a:hover {
+      transform: translateY(-3px);
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      border-color: var(--accent-primary);
+    }
+
+    .social-links a i {
+      position: relative;
+      z-index: 1;
+    }
+
+    .copyright {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 2rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-xl);
+      }
+
+      nav ul.active {
+        left: 0;
+      }
+
+      nav ul li {
+        margin: 1.5rem 0;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease;
+      }
+
+      nav ul.active li {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      nav ul.active li:nth-child(1) { transition-delay: 0.1s; }
+      nav ul.active li:nth-child(2) { transition-delay: 0.2s; }
+      nav ul.active li:nth-child(3) { transition-delay: 0.3s; }
+      nav ul.active li:nth-child(4) { transition-delay: 0.4s; }
+
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .page-title h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Responsive para móviles pequeños */
+    @media (max-width: 480px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Animaciones */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .delay-1 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.4s;
+    }
+
+    /* Efecto de partículas cyberpunk */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      animation: particle-float 15s infinite linear;
+      box-shadow: 0 0 4px var(--accent-primary);
+    }
+
+    @keyframes particle-float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Grid de fondo animado -->
+  <div class="grid-bg"></div>
+
+  <!-- Partículas animadas -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Header -->
+  <header id="mainHeader">
+    <div class="container">
+      <div class="header-content">
+        <a href="index.html" class="logo">Antony</a>
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav>
+          <ul id="navMenu">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="projects.html" class="active">Proyectos</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="contact.html">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-title">
+        <h1>Mis Proyectos</h1>
+       
+      </div>
+      
+      <div id="contenedor">
+        <div class="loading">
+          
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="social-links">
+          <a href="https://github.com/AntonyYtz"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p class="copyright">&copy; 2025 Antony Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const GIST_ID = "3690e860889f4588b37fb2406aee2c25";
+    const FILENAME = "actividades.json";
+
+    async function cargarActividades() {
+      try {
+        const res = await fetch(`https://api.github.com/gists/${GIST_ID}`);
+        const data = await res.json();
+        const content = data.files[FILENAME]?.content || "[]";
+        const actividades = JSON.parse(content);
+        const cont = document.getElementById("contenedor");
+        cont.innerHTML = "";
+        
+        if (actividades.length === 0) {
+          cont.innerHTML = '<div class="error"><p>No hay proyectos disponibles en este momento.</p></div>';
+          return;
+        }
+        
+        // Crear grid de proyectos
+        const grid = document.createElement('div');
+        grid.className = 'projects-grid';
+        
+        actividades.forEach((act, index) => {
+          const projectCard = document.createElement("div");
+          projectCard.className = `project-card`;
+          projectCard.style.animationDelay = `${index * 0.1}s`;
+          
+          // Icono basado en el tipo de proyecto
+          let iconClass = "fas fa-file-alt";
+          if (act.titulo.toLowerCase().includes("web") || act.titulo.toLowerCase().includes("sitio")) {
+            iconClass = "fas fa-globe";
+          } else if (act.titulo.toLowerCase().includes("app") || act.titulo.toLowerCase().includes("móvil")) {
+            iconClass = "fas fa-mobile-alt";
+          } else if (act.titulo.toLowerCase().includes("diseño") || act.titulo.toLowerCase().includes("ui")) {
+            iconClass = "fas fa-palette";
+          }
+          
+          projectCard.innerHTML = `
+            <div class="project-image">
+              <i class="${iconClass}"></i>
+            </div>
+            <div class="project-content">
+              <h2>${act.titulo}</h2>
+              <p>${act.descripcion}</p>
+              <div class="project-meta">
+                <a href="${act.pdf}" target="_blank" class="btn"><i class="fas fa-file-pdf"></i> Ver PDF</a>
+                <a href="${act.pdf}" download class="download-btn"><i class="fas fa-download"></i> Descargar</a>
+              </div>
+            </div>
+          `;
+          
+          grid.appendChild(projectCard);
+        });
+        
+        cont.appendChild(grid);
+        
+      } catch (error) {
+        const cont = document.getElementById("contenedor");
+        cont.innerHTML = '<div class="error"><p>Error al cargar los proyectos. Inténtalo de nuevo más tarde.</p></div>';
+        console.error("Error al cargar actividades:", error);
+      }
+    }
+
+    // Generar partículas cyberpunk
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 40;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Tamaño aleatorio
+        const size = Math.random() * 2 + 1;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Posición aleatoria
+        particle.style.left = `${Math.random() * 100}%`;
+        
+        // Animación con retraso y duración aleatorios
+        particle.style.animationDelay = `${Math.random() * 15}s`;
+        particle.style.animationDuration = `${10 + Math.random() * 10}s`;
+        
+        // Color aleatorio dentro de la paleta cyberpunk
+        const colors = ['#00ff88', '#00ccff', '#ff00ff'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.boxShadow = `0 0 6px ${particle.style.background}`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Menú móvil
+    document.getElementById('menuToggle').addEventListener('click', function() {
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.toggle('active');
+      
+      // Animación del icono del menú
+      this.querySelector('i').classList.toggle('fa-bars');
+      this.querySelector('i').classList.toggle('fa-times');
+    });
+
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('#navMenu a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.getElementById('navMenu').classList.remove('active');
+        document.querySelector('#menuToggle i').classList.add('fa-bars');
+        document.querySelector('#menuToggle i').classList.remove('fa-times');
+      });
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('mainHeader');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Animación de elementos al hacer scroll
+    function animateOnScroll() {
+      const elements = document.querySelectorAll('.fade-in-up');
+      
+      elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight - 100) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
+      cargarActividades();
+      
+      // Activar animación al hacer scroll
+      window.addEventListener('scroll', animateOnScroll);
+    });
+  </script>
+</body>
+</html>
